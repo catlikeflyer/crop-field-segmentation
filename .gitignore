@@ -1,0 +1,32 @@
+# macOS system files
+.DS_Store
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Jupyter notebook kernel logs
+*.log
+
+# Jupyter notebook output files
+*.html
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Jupyter notebook temporary files
+*.ipynb~
+*.nbconvert.ipynb
+
+# ignore all ._ files
+*/._*
+*/.
+._*
+logs/
+
+# ignore deepglobe
+deepglobe-land-cover-classification-dataset/
+
+
+
