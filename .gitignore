@@ -24,6 +24,7 @@
 */.
 ._*
 logs/
+lightning_logs/
 
 # ignore deepglobe
 deepglobe-land-cover-classification-dataset/
