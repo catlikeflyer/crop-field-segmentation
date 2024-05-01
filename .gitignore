@@ -1,3 +1,6 @@
+# checkpoints
+*.ckpt
+
 # macOS system files
 .DS_Store
 
