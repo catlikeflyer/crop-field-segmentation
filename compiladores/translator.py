@@ -3,6 +3,8 @@ import ply.yacc as yacc
 import networkx as nx
 from networkx.drawing.nx_pydot import graphviz_layout
 import matplotlib.pyplot as plt
+import sys
+
 from library import *
 parseGraph = None
 draw = False
@@ -27,6 +29,11 @@ symbol_table["save_image"] = save_image
 symbol_table["gen_matrix"] = gen_matrix
 symbol_table["gen_vector"] = gen_vector
 symbol_table["show_image"] = show_image
+symbol_table["show_histogram"] = show_histogram
+symbol_table["watershed_segmentation"] = watershed_segmentation 
+symbol_table["grabcut_segmentation"] = grabcut_segmentation
+symbol_table["template_matching"] = template_matching
+symbol_table["canny_edge_detection"] = canny_edge_detection
 
 PLUS_OP = 1
 MINUS_OP = 2
@@ -46,7 +53,11 @@ tokens = (
     'RPAREN',
     'COMMA',
     'STRING',
-    'CONNECT'
+    'CONNECT',
+    'WATERSHED',
+    'GRABCUT',
+    'TEMPLATEMATCHING',
+    'CANNYEDGEDETECTION',
 )
 
 t_PLUS = r'\+'
@@ -59,6 +70,7 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_COMMA = r','
 t_CONNECT = r'\->'
+
 
 def t_NUMBER(t):
     r'\d+\.?\d*'
@@ -92,6 +104,12 @@ def t_error(t):
 
 lexer = lex.lex()
 
+precedence = (
+    ('left', 'LSQUARE', 'RSQUARE'),  # Precedencia para la indexación de lista
+    ('left', 'SETTO')  # Precedencia para la asignación de lista
+)
+
+
 def p_assignment_assign(p):
     '''
     assignment : VARIABLE SETTO expression
@@ -107,32 +125,33 @@ def p_assignment_flow(p):
     '''
     assignment : VARIABLE SETTO flow
     '''
-    print("Accessing flows")
-    pass
+    global symbol_table
+    symbol_table[p[1]] = p[3]
+    p[0] = p[3]
 
 def p_flow_form(p):
     '''
     flow : VARIABLE CONNECT flow_functions
     '''
-    pass
+    p[0] = {"function": p[1], "params": p[3]}
 
 def p_flow_functions(p):
     '''
     flow_functions : flow_function_call CONNECT flow_functions
     '''
-    pass
+    p[0] = [p[1]] + p[3]
 
 def p_flow_function(p):
     '''
     flow_functions : flow_function_call
     '''
-    pass
+    p[0] = [p[1]]
 
 def p_flow_function_call(p):
     '''
-    flow_function_call : VARIABLE LPAREN params RPAREN
+    flow_function_call : VARIABLE LPAREN RPAREN
     '''
-    pass
+    p[0] = {"function": p[1], "params": []}
 
 def p_assignment_expression(p):
     ''' assignment : expression
@@ -264,6 +283,31 @@ def p_params(p):
     else:
         p[0] = [p[1]]
 
+def p_function_call_watershed(p):
+    '''
+    function_call : WATERSHED LPAREN VARIABLE RPAREN
+    '''
+    p[0] = watershed_segmentation(p[3])
+
+def p_function_call_grabcut(p):
+    '''
+    function_call : GRABCUT LPAREN VARIABLE RPAREN
+    '''
+    p[0] = grabcut_segmentation(p[3])
+
+def p_function_call_template_matching(p):
+    '''
+    function_call : TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
+    '''
+    p[0] = template_matching(p[3], p[5])
+
+def p_function_call_canny_edge_detection(p):
+    '''
+    function_call : CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
+    '''
+    p[0] = canny_edge_detection(p[3])
+
+
 def p_error(p):
     print("Syntax error on input ", p)
 
@@ -353,36 +397,58 @@ def visit_node(tree, node_id, from_id):
             else:
                 print(f"Error {v} IS NOT on symbol table ")
                 return "Error"
+                
+
+# Modifica el bucle principal para leer y procesar archivos si se proporcionan como argumentos de línea de comandos
+def process_file(filename):
+    global parseGraph
+    global NODE_COUNTER
+
+    with open(filename, 'r') as file:
+        for line_number, line in enumerate(file, start=1):
+            if not line.strip():  # Saltar líneas en blanco
+                continue
+            
+            try:
+                NODE_COUNTER = 0
+                parseGraph = nx.Graph()
+                root = add_node({"type": "INITIAL", "label": "INIT"})
+                result = parser.parse(line)
+                parseGraph.add_edge(root["counter"], result["counter"])
+                execute_parse_tree(parseGraph)
+            except Exception as e:
+                print(f"Error en la línea {line_number}: {e}")
+
 
 parser = yacc.yacc()
-while True:
-    try:
-        data = input(">")
-        if(data == 'exit'):
-            break
-        
-        if(data == 'symbols'):
-            print(symbol_table)
-            continue
 
-    except EOFError:
-        break
-    
-    if not data: continue 
-    
-    NODE_COUNTER = 0
-    parseGraph = nx.Graph()
-    root = add_node({"type":"INITIAL" , "label":"INIT"})
-    result = parser.parse(data)
-    parseGraph.add_edge(root["counter"], result["counter"])
-    
-    labels = nx.get_node_attributes(parseGraph, 'label')
 
-    if(draw):
-        pos = graphviz_layout(parseGraph, prog="dot")
-        nx.draw(parseGraph, pos, labels=labels, with_labels = True)
-        plt.show()
+# Modifica el bucle principal para leer y procesar archivos si se proporcionan como argumentos de línea de comandos
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        for filename in sys.argv[1:]:
+            process_file(filename)
+    else:
+        while True:
+            try:
+                data = input(">")
+                if data == 'exit':
+                    break
+                if data == 'symbols':
+                    print(symbol_table)
+                    continue
 
-    execute_parse_tree(parseGraph)
-              
+            except EOFError:
+                break
+
+            if not data: continue
+
+            NODE_COUNTER = 0
+            parseGraph = nx.Graph()
+            root = add_node({"type": "INITIAL", "label": "INIT"})
+            result = parser.parse(data)
+            parseGraph.add_edge(root["counter"], result["counter"])
+
+            execute_parse_tree(parseGraph)
+
 print("Finished, accepted")
