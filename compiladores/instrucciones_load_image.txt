@@ -1,0 +1,1 @@
+image = load_image("C:\Users\valte\8th semester\Compiladores/1499_sat.jpg")
