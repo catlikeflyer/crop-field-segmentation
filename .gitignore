@@ -15,6 +15,7 @@
 *.pdf
 *.jpeg
 *.gif
+*.pth
 
 # Jupyter notebook temporary files
 *.ipynb~
