@@ -1,0 +1,13 @@
+matriz = gen_matrix(1,2,3,4)
+
+matriz_t = np_transpose(matriz)
+matriz_d = np_dot(matriz, matriz_t)
+
+np_max(matriz)
+np_mean(matriz)
+np_std(matriz)
+np_sum(matriz)
+np_max(matriz)
+np_min(matriz)
+np_var(matriz)
+np_median(matriz)
