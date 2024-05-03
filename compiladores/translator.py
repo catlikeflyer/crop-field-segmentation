@@ -34,6 +34,16 @@ symbol_table["watershed_segmentation"] = watershed_segmentation
 symbol_table["grabcut_segmentation"] = grabcut_segmentation
 symbol_table["template_matching"] = template_matching
 symbol_table["canny_edge_detection"] = canny_edge_detection
+symbol_table["np_median"] = np_median
+symbol_table["np_mean"] = np_mean
+symbol_table["np_std"] = np_std
+symbol_table["np_sum"] = np_sum
+symbol_table["np_max"] = np_max
+symbol_table["np_min"] = np_min
+symbol_table["np_transpose"] = np_transpose
+symbol_table["np_dot"] = np_dot
+symbol_table["np_var"] = np_var
+
 
 PLUS_OP = 1
 MINUS_OP = 2
@@ -51,8 +61,6 @@ tokens = (
     'EXP',
     'LPAREN',
     'RPAREN',
-    'LSQUARE',
-    'RSQUARE',
     'COMMA',
     'STRING',
     'CONNECT',
@@ -60,6 +68,8 @@ tokens = (
     'GRABCUT',
     'TEMPLATEMATCHING',
     'CANNYEDGEDETECTION',
+    'LSQUARE',  
+    'RSQUARE'   
 )
 
 t_PLUS = r'\+'
@@ -70,10 +80,10 @@ t_SETTO = r'='
 t_EXP = r'\^'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-t_LSQUARE = r'\['
-t_RSQUARE = r'\]'
 t_COMMA = r','
 t_CONNECT = r'\->'
+t_LSQUARE = r'\['
+t_RSQUARE = r'\]'
 
 
 def t_NUMBER(t):
@@ -107,11 +117,6 @@ def t_error(t):
 ### ------------------------------------ boilerplate end
 
 lexer = lex.lex()
-
-precedence = (
-    ('left', 'LSQUARE', 'RSQUARE'),  # Precedencia para la indexación de lista
-    ('left', 'SETTO')  # Precedencia para la asignación de lista
-)
 
 
 def p_assignment_assign(p):
@@ -311,6 +316,38 @@ def p_function_call_canny_edge_detection(p):
     '''
     p[0] = canny_edge_detection(p[3])
 
+def p_expression_list(p):
+    ''' expression : list
+    '''
+    p[0] = p[1]
+
+def p_list(p):
+    ''' list : LSQUARE list_items RSQUARE
+    '''
+    p[0] = p[2]
+
+def p_list_items(p):
+    ''' list_items : list_items COMMA NUMBER 
+                    | NUMBER
+    '''
+    if len(p) > 2:
+        p[0] = p[1] + [int(p[3])]  # Convertir la cadena de número a entero
+    else:
+        p[0] = [int(p[1])]  # Convertir la cadena de número a entero
+    print("List Items:", p[0], type(p[0]))
+
+def p_expression_list_index(p):
+    ''' expression : expression LSQUARE NUMBER RSQUARE
+    '''
+    p[0] = {"list_index": p[1], "index": int(p[3])}  # Convertir la cadena de número a entero
+    print("Expression List Index:", p[0], type(p[0]["index"]))
+
+def p_expression_list_assignment(p):
+    ''' expression : expression LSQUARE NUMBER RSQUARE SETTO expression
+    '''
+    p[0] = {"list_index": p[1], "index": int(p[3]), "set_to": p[6]}  # Convertir la cadena de número a entero
+    print("Expression List Assignment:", p[0], type(p[0]["index"]))
+
 
 def p_error(p):
     print("Syntax error on input ", p)
@@ -419,6 +456,14 @@ def process_file(filename):
                 root = add_node({"type": "INITIAL", "label": "INIT"})
                 result = parser.parse(line)
                 parseGraph.add_edge(root["counter"], result["counter"])
+
+                # Imprimir el árbol de sintaxis abstracto
+                print(f"Expresión en la línea {line_number}: {line}")
+                print("Árbol de sintaxis abstracto:")
+                for node in parseGraph.nodes:
+                    print(f"{node}: {parseGraph.nodes[node]}")
+                print()
+
                 execute_parse_tree(parseGraph)
             except Exception as e:
                 print(f"Error en la línea {line_number}: {e}")
@@ -426,8 +471,27 @@ def process_file(filename):
 
 parser = yacc.yacc()
 
+def process_expression(expression):
+    global parseGraph
+    global NODE_COUNTER
 
-# Modifica el bucle principal para leer y procesar archivos si se proporcionan como argumentos de línea de comandos
+    try:
+        NODE_COUNTER = 0
+        parseGraph = nx.Graph()
+        root = add_node({"type": "INITIAL", "label": "INIT"})
+        result = parser.parse(expression)
+        parseGraph.add_edge(root["counter"], result["counter"])
+
+        # Imprimir el árbol de sintaxis abstracto
+        print("Árbol de sintaxis abstracto:")
+        for node in parseGraph.nodes:
+            print(f"{node}: {parseGraph.nodes[node]}")
+        print()
+
+        execute_parse_tree(parseGraph)
+    except Exception as e:
+        print(f"Error: {e}")
+
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         for filename in sys.argv[1:]:
@@ -442,17 +506,10 @@ if __name__ == "__main__":
                     print(symbol_table)
                     continue
 
+                # Procesar expresiones ingresadas
+                process_expression(data)
+
             except EOFError:
                 break
-
-            if not data: continue
-
-            NODE_COUNTER = 0
-            parseGraph = nx.Graph()
-            root = add_node({"type": "INITIAL", "label": "INIT"})
-            result = parser.parse(data)
-            parseGraph.add_edge(root["counter"], result["counter"])
-
-            execute_parse_tree(parseGraph)
 
 print("Finished, accepted")
