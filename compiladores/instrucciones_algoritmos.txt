@@ -1,0 +1,4 @@
+imagen = load_image("C:\Users\valte\8th semester\Compiladores/1499_sat.jpg")
+
+imagen_segmentada = watershed_segmentation(imagen)
+show_image(imagen_segmentada)
