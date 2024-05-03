@@ -83,9 +83,8 @@ CANNYEDGEDETECTION: función de OpenCV
 ![numpy2](./doc_images/numpy2.png)
 ![numpy3](./doc_images/numpy3.png)
 ##### Histogramas
-![](./doc_images/)
-##### Extracción de árbol abstracto
-![](./doc_images/)
+![Histograma1](./doc_images/histogram1.png)
+![Histograma2](./doc_images/histogram2.png)
 ##### Pruebas automáticas
 ![](./doc_images/)
 
