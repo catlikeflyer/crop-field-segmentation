@@ -79,3 +79,30 @@ def gen_matrix(a,b,*args):
 def gen_vector(*args):
     s = np.array(args)
     return s
+
+def np_max(matrix):
+    return np.max(matrix)
+
+def np_median(matrix):
+    return np.median(matrix)
+
+def np_mean(matrix):
+    return np.mean(matrix)
+
+def np_std(matrix):
+    return np.std(matrix)
+
+def np_sum(matrix):
+    return np.sum(matrix)
+
+def np_min(matrix):
+    return np.min(matrix)
+
+def np_transpose(matrix):
+    return np.transpose(matrix)
+
+def np_dot(matrix1, matrix2):
+    return np.dot(matrix1, matrix2)
+
+def np_var(matrix):
+    return np.var(matrix)
