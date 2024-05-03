@@ -1,10 +1,5 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    LSQUARE
-    RSQUARE
-
 Grammar
 
 Rule 0     S' -> assignment
@@ -37,23 +32,29 @@ Rule 26    function_call -> WATERSHED LPAREN VARIABLE RPAREN
 Rule 27    function_call -> GRABCUT LPAREN VARIABLE RPAREN
 Rule 28    function_call -> TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
 Rule 29    function_call -> CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
+Rule 30    expression -> list
+Rule 31    list -> LSQUARE list_items RSQUARE
+Rule 32    list_items -> list_items COMMA NUMBER
+Rule 33    list_items -> NUMBER
+Rule 34    expression -> expression LSQUARE NUMBER RSQUARE
+Rule 35    expression -> expression LSQUARE NUMBER RSQUARE SETTO expression
 
 Terminals, with rules where they appear
 
 CANNYEDGEDETECTION   : 29
-COMMA                : 24 28
+COMMA                : 24 28 32
 CONNECT              : 3 4
 DIVIDE               : 14
 EXP                  : 16
 GRABCUT              : 27
 LPAREN               : 6 18 22 23 26 27 28 29
-LSQUARE              : 
+LSQUARE              : 31 34 35
 MINUS                : 9
-NUMBER               : 19
+NUMBER               : 19 32 33 34 35
 PLUS                 : 8
 RPAREN               : 6 18 22 23 26 27 28 29
-RSQUARE              : 
-SETTO                : 1 2
+RSQUARE              : 31 34 35
+SETTO                : 1 2 35
 STRING               : 12
 TEMPLATEMATCHING     : 28
 TIMES                : 13
@@ -65,12 +66,14 @@ Nonterminals, with rules where they appear
 
 assignment           : 0
 exponent             : 13 14 15
-expression           : 1 7 8 9 18 24 25
+expression           : 1 7 8 9 18 24 25 34 35 35
 factor               : 16 16 17
 flow                 : 2
 flow_function_call   : 4 5
 flow_functions       : 3 4
 function_call        : 21
+list                 : 30
+list_items           : 31 32
 params               : 23 24
 string               : 11
 term                 : 8 9 10 13 14
@@ -87,10 +90,14 @@ state 0
     (9) expression -> . expression MINUS term
     (10) expression -> . term
     (11) expression -> . string
+    (30) expression -> . list
+    (34) expression -> . expression LSQUARE NUMBER RSQUARE
+    (35) expression -> . expression LSQUARE NUMBER RSQUARE SETTO expression
     (13) term -> . term TIMES exponent
     (14) term -> . term DIVIDE exponent
     (15) term -> . exponent
     (12) string -> . STRING
+    (31) list -> . LSQUARE list_items RSQUARE
     (16) exponent -> . factor EXP factor
     (17) exponent -> . factor
     (18) exponent -> . LPAREN expression RPAREN
@@ -105,21 +112,23 @@ state 0
     (29) function_call -> . CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
 
     VARIABLE        shift and go to state 2
-    STRING          shift and go to state 7
-    LPAREN          shift and go to state 9
-    NUMBER          shift and go to state 10
-    WATERSHED       shift and go to state 12
-    GRABCUT         shift and go to state 13
-    TEMPLATEMATCHING shift and go to state 14
-    CANNYEDGEDETECTION shift and go to state 15
+    STRING          shift and go to state 10
+    LSQUARE         shift and go to state 7
+    LPAREN          shift and go to state 12
+    NUMBER          shift and go to state 8
+    WATERSHED       shift and go to state 14
+    GRABCUT         shift and go to state 15
+    TEMPLATEMATCHING shift and go to state 16
+    CANNYEDGEDETECTION shift and go to state 17
 
     assignment                     shift and go to state 1
     expression                     shift and go to state 3
     term                           shift and go to state 4
     string                         shift and go to state 5
-    exponent                       shift and go to state 6
-    factor                         shift and go to state 8
-    function_call                  shift and go to state 11
+    list                           shift and go to state 6
+    exponent                       shift and go to state 9
+    factor                         shift and go to state 11
+    function_call                  shift and go to state 13
 
 state 1
 
@@ -135,14 +144,15 @@ state 2
     (22) function_call -> VARIABLE . LPAREN RPAREN
     (23) function_call -> VARIABLE . LPAREN params RPAREN
 
-    SETTO           shift and go to state 16
+    SETTO           shift and go to state 18
     EXP             reduce using rule 20 (factor -> VARIABLE .)
     TIMES           reduce using rule 20 (factor -> VARIABLE .)
     DIVIDE          reduce using rule 20 (factor -> VARIABLE .)
     PLUS            reduce using rule 20 (factor -> VARIABLE .)
     MINUS           reduce using rule 20 (factor -> VARIABLE .)
+    LSQUARE         reduce using rule 20 (factor -> VARIABLE .)
     $end            reduce using rule 20 (factor -> VARIABLE .)
-    LPAREN          shift and go to state 17
+    LPAREN          shift and go to state 19
 
 
 state 3
@@ -150,10 +160,13 @@ state 3
     (7) assignment -> expression .
     (8) expression -> expression . PLUS term
     (9) expression -> expression . MINUS term
+    (34) expression -> expression . LSQUARE NUMBER RSQUARE
+    (35) expression -> expression . LSQUARE NUMBER RSQUARE SETTO expression
 
     $end            reduce using rule 7 (assignment -> expression .)
-    PLUS            shift and go to state 18
-    MINUS           shift and go to state 19
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+    LSQUARE         shift and go to state 22
 
 
 state 4
@@ -164,11 +177,12 @@ state 4
 
     PLUS            reduce using rule 10 (expression -> term .)
     MINUS           reduce using rule 10 (expression -> term .)
+    LSQUARE         reduce using rule 10 (expression -> term .)
     $end            reduce using rule 10 (expression -> term .)
     RPAREN          reduce using rule 10 (expression -> term .)
     COMMA           reduce using rule 10 (expression -> term .)
-    TIMES           shift and go to state 20
-    DIVIDE          shift and go to state 21
+    TIMES           shift and go to state 23
+    DIVIDE          shift and go to state 24
 
 
 state 5
@@ -177,6 +191,7 @@ state 5
 
     PLUS            reduce using rule 11 (expression -> string .)
     MINUS           reduce using rule 11 (expression -> string .)
+    LSQUARE         reduce using rule 11 (expression -> string .)
     $end            reduce using rule 11 (expression -> string .)
     RPAREN          reduce using rule 11 (expression -> string .)
     COMMA           reduce using rule 11 (expression -> string .)
@@ -184,84 +199,27 @@ state 5
 
 state 6
 
-    (15) term -> exponent .
+    (30) expression -> list .
 
-    TIMES           reduce using rule 15 (term -> exponent .)
-    DIVIDE          reduce using rule 15 (term -> exponent .)
-    PLUS            reduce using rule 15 (term -> exponent .)
-    MINUS           reduce using rule 15 (term -> exponent .)
-    $end            reduce using rule 15 (term -> exponent .)
-    RPAREN          reduce using rule 15 (term -> exponent .)
-    COMMA           reduce using rule 15 (term -> exponent .)
+    PLUS            reduce using rule 30 (expression -> list .)
+    MINUS           reduce using rule 30 (expression -> list .)
+    LSQUARE         reduce using rule 30 (expression -> list .)
+    $end            reduce using rule 30 (expression -> list .)
+    RPAREN          reduce using rule 30 (expression -> list .)
+    COMMA           reduce using rule 30 (expression -> list .)
 
 
 state 7
 
-    (12) string -> STRING .
+    (31) list -> LSQUARE . list_items RSQUARE
+    (32) list_items -> . list_items COMMA NUMBER
+    (33) list_items -> . NUMBER
 
-    PLUS            reduce using rule 12 (string -> STRING .)
-    MINUS           reduce using rule 12 (string -> STRING .)
-    $end            reduce using rule 12 (string -> STRING .)
-    RPAREN          reduce using rule 12 (string -> STRING .)
-    COMMA           reduce using rule 12 (string -> STRING .)
+    NUMBER          shift and go to state 26
 
+    list_items                     shift and go to state 25
 
 state 8
-
-    (16) exponent -> factor . EXP factor
-    (17) exponent -> factor .
-
-    EXP             shift and go to state 22
-    TIMES           reduce using rule 17 (exponent -> factor .)
-    DIVIDE          reduce using rule 17 (exponent -> factor .)
-    PLUS            reduce using rule 17 (exponent -> factor .)
-    MINUS           reduce using rule 17 (exponent -> factor .)
-    $end            reduce using rule 17 (exponent -> factor .)
-    RPAREN          reduce using rule 17 (exponent -> factor .)
-    COMMA           reduce using rule 17 (exponent -> factor .)
-
-
-state 9
-
-    (18) exponent -> LPAREN . expression RPAREN
-    (8) expression -> . expression PLUS term
-    (9) expression -> . expression MINUS term
-    (10) expression -> . term
-    (11) expression -> . string
-    (13) term -> . term TIMES exponent
-    (14) term -> . term DIVIDE exponent
-    (15) term -> . exponent
-    (12) string -> . STRING
-    (16) exponent -> . factor EXP factor
-    (17) exponent -> . factor
-    (18) exponent -> . LPAREN expression RPAREN
-    (19) factor -> . NUMBER
-    (20) factor -> . VARIABLE
-    (21) factor -> . function_call
-    (22) function_call -> . VARIABLE LPAREN RPAREN
-    (23) function_call -> . VARIABLE LPAREN params RPAREN
-    (26) function_call -> . WATERSHED LPAREN VARIABLE RPAREN
-    (27) function_call -> . GRABCUT LPAREN VARIABLE RPAREN
-    (28) function_call -> . TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
-    (29) function_call -> . CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
-
-    STRING          shift and go to state 7
-    LPAREN          shift and go to state 9
-    NUMBER          shift and go to state 10
-    VARIABLE        shift and go to state 24
-    WATERSHED       shift and go to state 12
-    GRABCUT         shift and go to state 13
-    TEMPLATEMATCHING shift and go to state 14
-    CANNYEDGEDETECTION shift and go to state 15
-
-    expression                     shift and go to state 23
-    term                           shift and go to state 4
-    string                         shift and go to state 5
-    exponent                       shift and go to state 6
-    factor                         shift and go to state 8
-    function_call                  shift and go to state 11
-
-state 10
 
     (19) factor -> NUMBER .
 
@@ -270,66 +228,69 @@ state 10
     DIVIDE          reduce using rule 19 (factor -> NUMBER .)
     PLUS            reduce using rule 19 (factor -> NUMBER .)
     MINUS           reduce using rule 19 (factor -> NUMBER .)
+    LSQUARE         reduce using rule 19 (factor -> NUMBER .)
     $end            reduce using rule 19 (factor -> NUMBER .)
     RPAREN          reduce using rule 19 (factor -> NUMBER .)
     COMMA           reduce using rule 19 (factor -> NUMBER .)
 
 
+state 9
+
+    (15) term -> exponent .
+
+    TIMES           reduce using rule 15 (term -> exponent .)
+    DIVIDE          reduce using rule 15 (term -> exponent .)
+    PLUS            reduce using rule 15 (term -> exponent .)
+    MINUS           reduce using rule 15 (term -> exponent .)
+    LSQUARE         reduce using rule 15 (term -> exponent .)
+    $end            reduce using rule 15 (term -> exponent .)
+    RPAREN          reduce using rule 15 (term -> exponent .)
+    COMMA           reduce using rule 15 (term -> exponent .)
+
+
+state 10
+
+    (12) string -> STRING .
+
+    PLUS            reduce using rule 12 (string -> STRING .)
+    MINUS           reduce using rule 12 (string -> STRING .)
+    LSQUARE         reduce using rule 12 (string -> STRING .)
+    $end            reduce using rule 12 (string -> STRING .)
+    RPAREN          reduce using rule 12 (string -> STRING .)
+    COMMA           reduce using rule 12 (string -> STRING .)
+
+
 state 11
 
-    (21) factor -> function_call .
+    (16) exponent -> factor . EXP factor
+    (17) exponent -> factor .
 
-    EXP             reduce using rule 21 (factor -> function_call .)
-    TIMES           reduce using rule 21 (factor -> function_call .)
-    DIVIDE          reduce using rule 21 (factor -> function_call .)
-    PLUS            reduce using rule 21 (factor -> function_call .)
-    MINUS           reduce using rule 21 (factor -> function_call .)
-    $end            reduce using rule 21 (factor -> function_call .)
-    RPAREN          reduce using rule 21 (factor -> function_call .)
-    COMMA           reduce using rule 21 (factor -> function_call .)
+    EXP             shift and go to state 27
+    TIMES           reduce using rule 17 (exponent -> factor .)
+    DIVIDE          reduce using rule 17 (exponent -> factor .)
+    PLUS            reduce using rule 17 (exponent -> factor .)
+    MINUS           reduce using rule 17 (exponent -> factor .)
+    LSQUARE         reduce using rule 17 (exponent -> factor .)
+    $end            reduce using rule 17 (exponent -> factor .)
+    RPAREN          reduce using rule 17 (exponent -> factor .)
+    COMMA           reduce using rule 17 (exponent -> factor .)
 
 
 state 12
 
-    (26) function_call -> WATERSHED . LPAREN VARIABLE RPAREN
-
-    LPAREN          shift and go to state 25
-
-
-state 13
-
-    (27) function_call -> GRABCUT . LPAREN VARIABLE RPAREN
-
-    LPAREN          shift and go to state 26
-
-
-state 14
-
-    (28) function_call -> TEMPLATEMATCHING . LPAREN VARIABLE COMMA VARIABLE RPAREN
-
-    LPAREN          shift and go to state 27
-
-
-state 15
-
-    (29) function_call -> CANNYEDGEDETECTION . LPAREN VARIABLE RPAREN
-
-    LPAREN          shift and go to state 28
-
-
-state 16
-
-    (1) assignment -> VARIABLE SETTO . expression
-    (2) assignment -> VARIABLE SETTO . flow
+    (18) exponent -> LPAREN . expression RPAREN
     (8) expression -> . expression PLUS term
     (9) expression -> . expression MINUS term
     (10) expression -> . term
     (11) expression -> . string
-    (3) flow -> . VARIABLE CONNECT flow_functions
+    (30) expression -> . list
+    (34) expression -> . expression LSQUARE NUMBER RSQUARE
+    (35) expression -> . expression LSQUARE NUMBER RSQUARE SETTO expression
     (13) term -> . term TIMES exponent
     (14) term -> . term DIVIDE exponent
     (15) term -> . exponent
     (12) string -> . STRING
+    (31) list -> . LSQUARE list_items RSQUARE
     (16) exponent -> . factor EXP factor
     (17) exponent -> . factor
     (18) exponent -> . LPAREN expression RPAREN
@@ -343,24 +304,117 @@ state 16
     (28) function_call -> . TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
     (29) function_call -> . CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
 
+    STRING          shift and go to state 10
+    LSQUARE         shift and go to state 7
+    LPAREN          shift and go to state 12
+    NUMBER          shift and go to state 8
     VARIABLE        shift and go to state 29
-    STRING          shift and go to state 7
-    LPAREN          shift and go to state 9
-    NUMBER          shift and go to state 10
-    WATERSHED       shift and go to state 12
-    GRABCUT         shift and go to state 13
-    TEMPLATEMATCHING shift and go to state 14
-    CANNYEDGEDETECTION shift and go to state 15
+    WATERSHED       shift and go to state 14
+    GRABCUT         shift and go to state 15
+    TEMPLATEMATCHING shift and go to state 16
+    CANNYEDGEDETECTION shift and go to state 17
 
-    expression                     shift and go to state 30
-    flow                           shift and go to state 31
+    expression                     shift and go to state 28
     term                           shift and go to state 4
     string                         shift and go to state 5
-    exponent                       shift and go to state 6
-    factor                         shift and go to state 8
-    function_call                  shift and go to state 11
+    list                           shift and go to state 6
+    exponent                       shift and go to state 9
+    factor                         shift and go to state 11
+    function_call                  shift and go to state 13
+
+state 13
+
+    (21) factor -> function_call .
+
+    EXP             reduce using rule 21 (factor -> function_call .)
+    TIMES           reduce using rule 21 (factor -> function_call .)
+    DIVIDE          reduce using rule 21 (factor -> function_call .)
+    PLUS            reduce using rule 21 (factor -> function_call .)
+    MINUS           reduce using rule 21 (factor -> function_call .)
+    LSQUARE         reduce using rule 21 (factor -> function_call .)
+    $end            reduce using rule 21 (factor -> function_call .)
+    RPAREN          reduce using rule 21 (factor -> function_call .)
+    COMMA           reduce using rule 21 (factor -> function_call .)
+
+
+state 14
+
+    (26) function_call -> WATERSHED . LPAREN VARIABLE RPAREN
+
+    LPAREN          shift and go to state 30
+
+
+state 15
+
+    (27) function_call -> GRABCUT . LPAREN VARIABLE RPAREN
+
+    LPAREN          shift and go to state 31
+
+
+state 16
+
+    (28) function_call -> TEMPLATEMATCHING . LPAREN VARIABLE COMMA VARIABLE RPAREN
+
+    LPAREN          shift and go to state 32
+
 
 state 17
+
+    (29) function_call -> CANNYEDGEDETECTION . LPAREN VARIABLE RPAREN
+
+    LPAREN          shift and go to state 33
+
+
+state 18
+
+    (1) assignment -> VARIABLE SETTO . expression
+    (2) assignment -> VARIABLE SETTO . flow
+    (8) expression -> . expression PLUS term
+    (9) expression -> . expression MINUS term
+    (10) expression -> . term
+    (11) expression -> . string
+    (30) expression -> . list
+    (34) expression -> . expression LSQUARE NUMBER RSQUARE
+    (35) expression -> . expression LSQUARE NUMBER RSQUARE SETTO expression
+    (3) flow -> . VARIABLE CONNECT flow_functions
+    (13) term -> . term TIMES exponent
+    (14) term -> . term DIVIDE exponent
+    (15) term -> . exponent
+    (12) string -> . STRING
+    (31) list -> . LSQUARE list_items RSQUARE
+    (16) exponent -> . factor EXP factor
+    (17) exponent -> . factor
+    (18) exponent -> . LPAREN expression RPAREN
+    (19) factor -> . NUMBER
+    (20) factor -> . VARIABLE
+    (21) factor -> . function_call
+    (22) function_call -> . VARIABLE LPAREN RPAREN
+    (23) function_call -> . VARIABLE LPAREN params RPAREN
+    (26) function_call -> . WATERSHED LPAREN VARIABLE RPAREN
+    (27) function_call -> . GRABCUT LPAREN VARIABLE RPAREN
+    (28) function_call -> . TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
+    (29) function_call -> . CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
+
+    VARIABLE        shift and go to state 34
+    STRING          shift and go to state 10
+    LSQUARE         shift and go to state 7
+    LPAREN          shift and go to state 12
+    NUMBER          shift and go to state 8
+    WATERSHED       shift and go to state 14
+    GRABCUT         shift and go to state 15
+    TEMPLATEMATCHING shift and go to state 16
+    CANNYEDGEDETECTION shift and go to state 17
+
+    expression                     shift and go to state 35
+    flow                           shift and go to state 36
+    term                           shift and go to state 4
+    string                         shift and go to state 5
+    list                           shift and go to state 6
+    exponent                       shift and go to state 9
+    factor                         shift and go to state 11
+    function_call                  shift and go to state 13
+
+state 19
 
     (22) function_call -> VARIABLE LPAREN . RPAREN
     (23) function_call -> VARIABLE LPAREN . params RPAREN
@@ -370,10 +424,14 @@ state 17
     (9) expression -> . expression MINUS term
     (10) expression -> . term
     (11) expression -> . string
+    (30) expression -> . list
+    (34) expression -> . expression LSQUARE NUMBER RSQUARE
+    (35) expression -> . expression LSQUARE NUMBER RSQUARE SETTO expression
     (13) term -> . term TIMES exponent
     (14) term -> . term DIVIDE exponent
     (15) term -> . exponent
     (12) string -> . STRING
+    (31) list -> . LSQUARE list_items RSQUARE
     (16) exponent -> . factor EXP factor
     (17) exponent -> . factor
     (18) exponent -> . LPAREN expression RPAREN
@@ -387,25 +445,27 @@ state 17
     (28) function_call -> . TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
     (29) function_call -> . CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
 
-    RPAREN          shift and go to state 32
-    STRING          shift and go to state 7
-    LPAREN          shift and go to state 9
-    NUMBER          shift and go to state 10
-    VARIABLE        shift and go to state 24
-    WATERSHED       shift and go to state 12
-    GRABCUT         shift and go to state 13
-    TEMPLATEMATCHING shift and go to state 14
-    CANNYEDGEDETECTION shift and go to state 15
+    RPAREN          shift and go to state 37
+    STRING          shift and go to state 10
+    LSQUARE         shift and go to state 7
+    LPAREN          shift and go to state 12
+    NUMBER          shift and go to state 8
+    VARIABLE        shift and go to state 29
+    WATERSHED       shift and go to state 14
+    GRABCUT         shift and go to state 15
+    TEMPLATEMATCHING shift and go to state 16
+    CANNYEDGEDETECTION shift and go to state 17
 
-    params                         shift and go to state 33
-    expression                     shift and go to state 34
+    params                         shift and go to state 38
+    expression                     shift and go to state 39
     term                           shift and go to state 4
     string                         shift and go to state 5
-    exponent                       shift and go to state 6
-    factor                         shift and go to state 8
-    function_call                  shift and go to state 11
+    list                           shift and go to state 6
+    exponent                       shift and go to state 9
+    factor                         shift and go to state 11
+    function_call                  shift and go to state 13
 
-state 18
+state 20
 
     (8) expression -> expression PLUS . term
     (13) term -> . term TIMES exponent
@@ -424,20 +484,20 @@ state 18
     (28) function_call -> . TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
     (29) function_call -> . CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
 
-    LPAREN          shift and go to state 9
-    NUMBER          shift and go to state 10
-    VARIABLE        shift and go to state 24
-    WATERSHED       shift and go to state 12
-    GRABCUT         shift and go to state 13
-    TEMPLATEMATCHING shift and go to state 14
-    CANNYEDGEDETECTION shift and go to state 15
+    LPAREN          shift and go to state 12
+    NUMBER          shift and go to state 8
+    VARIABLE        shift and go to state 29
+    WATERSHED       shift and go to state 14
+    GRABCUT         shift and go to state 15
+    TEMPLATEMATCHING shift and go to state 16
+    CANNYEDGEDETECTION shift and go to state 17
 
-    term                           shift and go to state 35
-    exponent                       shift and go to state 6
-    factor                         shift and go to state 8
-    function_call                  shift and go to state 11
+    term                           shift and go to state 40
+    exponent                       shift and go to state 9
+    factor                         shift and go to state 11
+    function_call                  shift and go to state 13
 
-state 19
+state 21
 
     (9) expression -> expression MINUS . term
     (13) term -> . term TIMES exponent
@@ -456,20 +516,28 @@ state 19
     (28) function_call -> . TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
     (29) function_call -> . CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
 
-    LPAREN          shift and go to state 9
-    NUMBER          shift and go to state 10
-    VARIABLE        shift and go to state 24
-    WATERSHED       shift and go to state 12
-    GRABCUT         shift and go to state 13
-    TEMPLATEMATCHING shift and go to state 14
-    CANNYEDGEDETECTION shift and go to state 15
+    LPAREN          shift and go to state 12
+    NUMBER          shift and go to state 8
+    VARIABLE        shift and go to state 29
+    WATERSHED       shift and go to state 14
+    GRABCUT         shift and go to state 15
+    TEMPLATEMATCHING shift and go to state 16
+    CANNYEDGEDETECTION shift and go to state 17
 
-    term                           shift and go to state 36
-    exponent                       shift and go to state 6
-    factor                         shift and go to state 8
-    function_call                  shift and go to state 11
+    term                           shift and go to state 41
+    exponent                       shift and go to state 9
+    factor                         shift and go to state 11
+    function_call                  shift and go to state 13
 
-state 20
+state 22
+
+    (34) expression -> expression LSQUARE . NUMBER RSQUARE
+    (35) expression -> expression LSQUARE . NUMBER RSQUARE SETTO expression
+
+    NUMBER          shift and go to state 42
+
+
+state 23
 
     (13) term -> term TIMES . exponent
     (16) exponent -> . factor EXP factor
@@ -485,19 +553,19 @@ state 20
     (28) function_call -> . TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
     (29) function_call -> . CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
 
-    LPAREN          shift and go to state 9
-    NUMBER          shift and go to state 10
-    VARIABLE        shift and go to state 24
-    WATERSHED       shift and go to state 12
-    GRABCUT         shift and go to state 13
-    TEMPLATEMATCHING shift and go to state 14
-    CANNYEDGEDETECTION shift and go to state 15
+    LPAREN          shift and go to state 12
+    NUMBER          shift and go to state 8
+    VARIABLE        shift and go to state 29
+    WATERSHED       shift and go to state 14
+    GRABCUT         shift and go to state 15
+    TEMPLATEMATCHING shift and go to state 16
+    CANNYEDGEDETECTION shift and go to state 17
 
-    exponent                       shift and go to state 37
-    factor                         shift and go to state 8
-    function_call                  shift and go to state 11
+    exponent                       shift and go to state 43
+    factor                         shift and go to state 11
+    function_call                  shift and go to state 13
 
-state 21
+state 24
 
     (14) term -> term DIVIDE . exponent
     (16) exponent -> . factor EXP factor
@@ -513,19 +581,36 @@ state 21
     (28) function_call -> . TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
     (29) function_call -> . CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
 
-    LPAREN          shift and go to state 9
-    NUMBER          shift and go to state 10
-    VARIABLE        shift and go to state 24
-    WATERSHED       shift and go to state 12
-    GRABCUT         shift and go to state 13
-    TEMPLATEMATCHING shift and go to state 14
-    CANNYEDGEDETECTION shift and go to state 15
+    LPAREN          shift and go to state 12
+    NUMBER          shift and go to state 8
+    VARIABLE        shift and go to state 29
+    WATERSHED       shift and go to state 14
+    GRABCUT         shift and go to state 15
+    TEMPLATEMATCHING shift and go to state 16
+    CANNYEDGEDETECTION shift and go to state 17
 
-    exponent                       shift and go to state 38
-    factor                         shift and go to state 8
-    function_call                  shift and go to state 11
+    exponent                       shift and go to state 44
+    factor                         shift and go to state 11
+    function_call                  shift and go to state 13
 
-state 22
+state 25
+
+    (31) list -> LSQUARE list_items . RSQUARE
+    (32) list_items -> list_items . COMMA NUMBER
+
+    RSQUARE         shift and go to state 45
+    COMMA           shift and go to state 46
+
+
+state 26
+
+    (33) list_items -> NUMBER .
+
+    RSQUARE         reduce using rule 33 (list_items -> NUMBER .)
+    COMMA           reduce using rule 33 (list_items -> NUMBER .)
+
+
+state 27
 
     (16) exponent -> factor EXP . factor
     (19) factor -> . NUMBER
@@ -538,28 +623,31 @@ state 22
     (28) function_call -> . TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
     (29) function_call -> . CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
 
-    NUMBER          shift and go to state 10
-    VARIABLE        shift and go to state 24
-    WATERSHED       shift and go to state 12
-    GRABCUT         shift and go to state 13
-    TEMPLATEMATCHING shift and go to state 14
-    CANNYEDGEDETECTION shift and go to state 15
+    NUMBER          shift and go to state 8
+    VARIABLE        shift and go to state 29
+    WATERSHED       shift and go to state 14
+    GRABCUT         shift and go to state 15
+    TEMPLATEMATCHING shift and go to state 16
+    CANNYEDGEDETECTION shift and go to state 17
 
-    factor                         shift and go to state 39
-    function_call                  shift and go to state 11
+    factor                         shift and go to state 47
+    function_call                  shift and go to state 13
 
-state 23
+state 28
 
     (18) exponent -> LPAREN expression . RPAREN
     (8) expression -> expression . PLUS term
     (9) expression -> expression . MINUS term
+    (34) expression -> expression . LSQUARE NUMBER RSQUARE
+    (35) expression -> expression . LSQUARE NUMBER RSQUARE SETTO expression
 
-    RPAREN          shift and go to state 40
-    PLUS            shift and go to state 18
-    MINUS           shift and go to state 19
+    RPAREN          shift and go to state 48
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+    LSQUARE         shift and go to state 22
 
 
-state 24
+state 29
 
     (20) factor -> VARIABLE .
     (22) function_call -> VARIABLE . LPAREN RPAREN
@@ -571,75 +659,80 @@ state 24
     RPAREN          reduce using rule 20 (factor -> VARIABLE .)
     PLUS            reduce using rule 20 (factor -> VARIABLE .)
     MINUS           reduce using rule 20 (factor -> VARIABLE .)
+    LSQUARE         reduce using rule 20 (factor -> VARIABLE .)
     COMMA           reduce using rule 20 (factor -> VARIABLE .)
     $end            reduce using rule 20 (factor -> VARIABLE .)
-    LPAREN          shift and go to state 17
+    LPAREN          shift and go to state 19
 
 
-state 25
+state 30
 
     (26) function_call -> WATERSHED LPAREN . VARIABLE RPAREN
 
-    VARIABLE        shift and go to state 41
+    VARIABLE        shift and go to state 49
 
 
-state 26
+state 31
 
     (27) function_call -> GRABCUT LPAREN . VARIABLE RPAREN
 
-    VARIABLE        shift and go to state 42
+    VARIABLE        shift and go to state 50
 
 
-state 27
+state 32
 
     (28) function_call -> TEMPLATEMATCHING LPAREN . VARIABLE COMMA VARIABLE RPAREN
 
-    VARIABLE        shift and go to state 43
+    VARIABLE        shift and go to state 51
 
 
-state 28
+state 33
 
     (29) function_call -> CANNYEDGEDETECTION LPAREN . VARIABLE RPAREN
 
-    VARIABLE        shift and go to state 44
+    VARIABLE        shift and go to state 52
 
 
-state 29
+state 34
 
     (3) flow -> VARIABLE . CONNECT flow_functions
     (20) factor -> VARIABLE .
     (22) function_call -> VARIABLE . LPAREN RPAREN
     (23) function_call -> VARIABLE . LPAREN params RPAREN
 
-    CONNECT         shift and go to state 45
+    CONNECT         shift and go to state 53
     EXP             reduce using rule 20 (factor -> VARIABLE .)
     TIMES           reduce using rule 20 (factor -> VARIABLE .)
     DIVIDE          reduce using rule 20 (factor -> VARIABLE .)
     PLUS            reduce using rule 20 (factor -> VARIABLE .)
     MINUS           reduce using rule 20 (factor -> VARIABLE .)
+    LSQUARE         reduce using rule 20 (factor -> VARIABLE .)
     $end            reduce using rule 20 (factor -> VARIABLE .)
-    LPAREN          shift and go to state 17
+    LPAREN          shift and go to state 19
 
 
-state 30
+state 35
 
     (1) assignment -> VARIABLE SETTO expression .
     (8) expression -> expression . PLUS term
     (9) expression -> expression . MINUS term
+    (34) expression -> expression . LSQUARE NUMBER RSQUARE
+    (35) expression -> expression . LSQUARE NUMBER RSQUARE SETTO expression
 
     $end            reduce using rule 1 (assignment -> VARIABLE SETTO expression .)
-    PLUS            shift and go to state 18
-    MINUS           shift and go to state 19
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+    LSQUARE         shift and go to state 22
 
 
-state 31
+state 36
 
     (2) assignment -> VARIABLE SETTO flow .
 
     $end            reduce using rule 2 (assignment -> VARIABLE SETTO flow .)
 
 
-state 32
+state 37
 
     (22) function_call -> VARIABLE LPAREN RPAREN .
 
@@ -648,33 +741,37 @@ state 32
     DIVIDE          reduce using rule 22 (function_call -> VARIABLE LPAREN RPAREN .)
     PLUS            reduce using rule 22 (function_call -> VARIABLE LPAREN RPAREN .)
     MINUS           reduce using rule 22 (function_call -> VARIABLE LPAREN RPAREN .)
+    LSQUARE         reduce using rule 22 (function_call -> VARIABLE LPAREN RPAREN .)
     $end            reduce using rule 22 (function_call -> VARIABLE LPAREN RPAREN .)
     RPAREN          reduce using rule 22 (function_call -> VARIABLE LPAREN RPAREN .)
     COMMA           reduce using rule 22 (function_call -> VARIABLE LPAREN RPAREN .)
 
 
-state 33
+state 38
 
     (23) function_call -> VARIABLE LPAREN params . RPAREN
     (24) params -> params . COMMA expression
 
-    RPAREN          shift and go to state 46
-    COMMA           shift and go to state 47
+    RPAREN          shift and go to state 54
+    COMMA           shift and go to state 55
 
 
-state 34
+state 39
 
     (25) params -> expression .
     (8) expression -> expression . PLUS term
     (9) expression -> expression . MINUS term
+    (34) expression -> expression . LSQUARE NUMBER RSQUARE
+    (35) expression -> expression . LSQUARE NUMBER RSQUARE SETTO expression
 
     RPAREN          reduce using rule 25 (params -> expression .)
     COMMA           reduce using rule 25 (params -> expression .)
-    PLUS            shift and go to state 18
-    MINUS           shift and go to state 19
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+    LSQUARE         shift and go to state 22
 
 
-state 35
+state 40
 
     (8) expression -> expression PLUS term .
     (13) term -> term . TIMES exponent
@@ -682,14 +779,15 @@ state 35
 
     PLUS            reduce using rule 8 (expression -> expression PLUS term .)
     MINUS           reduce using rule 8 (expression -> expression PLUS term .)
+    LSQUARE         reduce using rule 8 (expression -> expression PLUS term .)
     $end            reduce using rule 8 (expression -> expression PLUS term .)
     RPAREN          reduce using rule 8 (expression -> expression PLUS term .)
     COMMA           reduce using rule 8 (expression -> expression PLUS term .)
-    TIMES           shift and go to state 20
-    DIVIDE          shift and go to state 21
+    TIMES           shift and go to state 23
+    DIVIDE          shift and go to state 24
 
 
-state 36
+state 41
 
     (9) expression -> expression MINUS term .
     (13) term -> term . TIMES exponent
@@ -697,14 +795,23 @@ state 36
 
     PLUS            reduce using rule 9 (expression -> expression MINUS term .)
     MINUS           reduce using rule 9 (expression -> expression MINUS term .)
+    LSQUARE         reduce using rule 9 (expression -> expression MINUS term .)
     $end            reduce using rule 9 (expression -> expression MINUS term .)
     RPAREN          reduce using rule 9 (expression -> expression MINUS term .)
     COMMA           reduce using rule 9 (expression -> expression MINUS term .)
-    TIMES           shift and go to state 20
-    DIVIDE          shift and go to state 21
+    TIMES           shift and go to state 23
+    DIVIDE          shift and go to state 24
 
 
-state 37
+state 42
+
+    (34) expression -> expression LSQUARE NUMBER . RSQUARE
+    (35) expression -> expression LSQUARE NUMBER . RSQUARE SETTO expression
+
+    RSQUARE         shift and go to state 56
+
+
+state 43
 
     (13) term -> term TIMES exponent .
 
@@ -712,12 +819,13 @@ state 37
     DIVIDE          reduce using rule 13 (term -> term TIMES exponent .)
     PLUS            reduce using rule 13 (term -> term TIMES exponent .)
     MINUS           reduce using rule 13 (term -> term TIMES exponent .)
+    LSQUARE         reduce using rule 13 (term -> term TIMES exponent .)
     $end            reduce using rule 13 (term -> term TIMES exponent .)
     RPAREN          reduce using rule 13 (term -> term TIMES exponent .)
     COMMA           reduce using rule 13 (term -> term TIMES exponent .)
 
 
-state 38
+state 44
 
     (14) term -> term DIVIDE exponent .
 
@@ -725,12 +833,32 @@ state 38
     DIVIDE          reduce using rule 14 (term -> term DIVIDE exponent .)
     PLUS            reduce using rule 14 (term -> term DIVIDE exponent .)
     MINUS           reduce using rule 14 (term -> term DIVIDE exponent .)
+    LSQUARE         reduce using rule 14 (term -> term DIVIDE exponent .)
     $end            reduce using rule 14 (term -> term DIVIDE exponent .)
     RPAREN          reduce using rule 14 (term -> term DIVIDE exponent .)
     COMMA           reduce using rule 14 (term -> term DIVIDE exponent .)
 
 
-state 39
+state 45
+
+    (31) list -> LSQUARE list_items RSQUARE .
+
+    PLUS            reduce using rule 31 (list -> LSQUARE list_items RSQUARE .)
+    MINUS           reduce using rule 31 (list -> LSQUARE list_items RSQUARE .)
+    LSQUARE         reduce using rule 31 (list -> LSQUARE list_items RSQUARE .)
+    $end            reduce using rule 31 (list -> LSQUARE list_items RSQUARE .)
+    RPAREN          reduce using rule 31 (list -> LSQUARE list_items RSQUARE .)
+    COMMA           reduce using rule 31 (list -> LSQUARE list_items RSQUARE .)
+
+
+state 46
+
+    (32) list_items -> list_items COMMA . NUMBER
+
+    NUMBER          shift and go to state 57
+
+
+state 47
 
     (16) exponent -> factor EXP factor .
 
@@ -738,12 +866,13 @@ state 39
     DIVIDE          reduce using rule 16 (exponent -> factor EXP factor .)
     PLUS            reduce using rule 16 (exponent -> factor EXP factor .)
     MINUS           reduce using rule 16 (exponent -> factor EXP factor .)
+    LSQUARE         reduce using rule 16 (exponent -> factor EXP factor .)
     $end            reduce using rule 16 (exponent -> factor EXP factor .)
     RPAREN          reduce using rule 16 (exponent -> factor EXP factor .)
     COMMA           reduce using rule 16 (exponent -> factor EXP factor .)
 
 
-state 40
+state 48
 
     (18) exponent -> LPAREN expression RPAREN .
 
@@ -751,52 +880,53 @@ state 40
     DIVIDE          reduce using rule 18 (exponent -> LPAREN expression RPAREN .)
     PLUS            reduce using rule 18 (exponent -> LPAREN expression RPAREN .)
     MINUS           reduce using rule 18 (exponent -> LPAREN expression RPAREN .)
+    LSQUARE         reduce using rule 18 (exponent -> LPAREN expression RPAREN .)
     $end            reduce using rule 18 (exponent -> LPAREN expression RPAREN .)
     RPAREN          reduce using rule 18 (exponent -> LPAREN expression RPAREN .)
     COMMA           reduce using rule 18 (exponent -> LPAREN expression RPAREN .)
 
 
-state 41
+state 49
 
     (26) function_call -> WATERSHED LPAREN VARIABLE . RPAREN
 
-    RPAREN          shift and go to state 48
+    RPAREN          shift and go to state 58
 
 
-state 42
+state 50
 
     (27) function_call -> GRABCUT LPAREN VARIABLE . RPAREN
 
-    RPAREN          shift and go to state 49
+    RPAREN          shift and go to state 59
 
 
-state 43
+state 51
 
     (28) function_call -> TEMPLATEMATCHING LPAREN VARIABLE . COMMA VARIABLE RPAREN
 
-    COMMA           shift and go to state 50
+    COMMA           shift and go to state 60
 
 
-state 44
+state 52
 
     (29) function_call -> CANNYEDGEDETECTION LPAREN VARIABLE . RPAREN
 
-    RPAREN          shift and go to state 51
+    RPAREN          shift and go to state 61
 
 
-state 45
+state 53
 
     (3) flow -> VARIABLE CONNECT . flow_functions
     (4) flow_functions -> . flow_function_call CONNECT flow_functions
     (5) flow_functions -> . flow_function_call
     (6) flow_function_call -> . VARIABLE LPAREN RPAREN
 
-    VARIABLE        shift and go to state 52
+    VARIABLE        shift and go to state 62
 
-    flow_functions                 shift and go to state 53
-    flow_function_call             shift and go to state 54
+    flow_functions                 shift and go to state 63
+    flow_function_call             shift and go to state 64
 
-state 46
+state 54
 
     (23) function_call -> VARIABLE LPAREN params RPAREN .
 
@@ -805,22 +935,27 @@ state 46
     DIVIDE          reduce using rule 23 (function_call -> VARIABLE LPAREN params RPAREN .)
     PLUS            reduce using rule 23 (function_call -> VARIABLE LPAREN params RPAREN .)
     MINUS           reduce using rule 23 (function_call -> VARIABLE LPAREN params RPAREN .)
+    LSQUARE         reduce using rule 23 (function_call -> VARIABLE LPAREN params RPAREN .)
     $end            reduce using rule 23 (function_call -> VARIABLE LPAREN params RPAREN .)
     RPAREN          reduce using rule 23 (function_call -> VARIABLE LPAREN params RPAREN .)
     COMMA           reduce using rule 23 (function_call -> VARIABLE LPAREN params RPAREN .)
 
 
-state 47
+state 55
 
     (24) params -> params COMMA . expression
     (8) expression -> . expression PLUS term
     (9) expression -> . expression MINUS term
     (10) expression -> . term
     (11) expression -> . string
+    (30) expression -> . list
+    (34) expression -> . expression LSQUARE NUMBER RSQUARE
+    (35) expression -> . expression LSQUARE NUMBER RSQUARE SETTO expression
     (13) term -> . term TIMES exponent
     (14) term -> . term DIVIDE exponent
     (15) term -> . exponent
     (12) string -> . STRING
+    (31) list -> . LSQUARE list_items RSQUARE
     (16) exponent -> . factor EXP factor
     (17) exponent -> . factor
     (18) exponent -> . LPAREN expression RPAREN
@@ -834,23 +969,47 @@ state 47
     (28) function_call -> . TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
     (29) function_call -> . CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
 
-    STRING          shift and go to state 7
-    LPAREN          shift and go to state 9
-    NUMBER          shift and go to state 10
-    VARIABLE        shift and go to state 24
-    WATERSHED       shift and go to state 12
-    GRABCUT         shift and go to state 13
-    TEMPLATEMATCHING shift and go to state 14
-    CANNYEDGEDETECTION shift and go to state 15
+    STRING          shift and go to state 10
+    LSQUARE         shift and go to state 7
+    LPAREN          shift and go to state 12
+    NUMBER          shift and go to state 8
+    VARIABLE        shift and go to state 29
+    WATERSHED       shift and go to state 14
+    GRABCUT         shift and go to state 15
+    TEMPLATEMATCHING shift and go to state 16
+    CANNYEDGEDETECTION shift and go to state 17
 
-    expression                     shift and go to state 55
+    expression                     shift and go to state 65
     term                           shift and go to state 4
     string                         shift and go to state 5
-    exponent                       shift and go to state 6
-    factor                         shift and go to state 8
-    function_call                  shift and go to state 11
+    list                           shift and go to state 6
+    exponent                       shift and go to state 9
+    factor                         shift and go to state 11
+    function_call                  shift and go to state 13
 
-state 48
+state 56
+
+    (34) expression -> expression LSQUARE NUMBER RSQUARE .
+    (35) expression -> expression LSQUARE NUMBER RSQUARE . SETTO expression
+
+    PLUS            reduce using rule 34 (expression -> expression LSQUARE NUMBER RSQUARE .)
+    MINUS           reduce using rule 34 (expression -> expression LSQUARE NUMBER RSQUARE .)
+    LSQUARE         reduce using rule 34 (expression -> expression LSQUARE NUMBER RSQUARE .)
+    $end            reduce using rule 34 (expression -> expression LSQUARE NUMBER RSQUARE .)
+    RPAREN          reduce using rule 34 (expression -> expression LSQUARE NUMBER RSQUARE .)
+    COMMA           reduce using rule 34 (expression -> expression LSQUARE NUMBER RSQUARE .)
+    SETTO           shift and go to state 66
+
+
+state 57
+
+    (32) list_items -> list_items COMMA NUMBER .
+
+    RSQUARE         reduce using rule 32 (list_items -> list_items COMMA NUMBER .)
+    COMMA           reduce using rule 32 (list_items -> list_items COMMA NUMBER .)
+
+
+state 58
 
     (26) function_call -> WATERSHED LPAREN VARIABLE RPAREN .
 
@@ -859,12 +1018,13 @@ state 48
     DIVIDE          reduce using rule 26 (function_call -> WATERSHED LPAREN VARIABLE RPAREN .)
     PLUS            reduce using rule 26 (function_call -> WATERSHED LPAREN VARIABLE RPAREN .)
     MINUS           reduce using rule 26 (function_call -> WATERSHED LPAREN VARIABLE RPAREN .)
+    LSQUARE         reduce using rule 26 (function_call -> WATERSHED LPAREN VARIABLE RPAREN .)
     $end            reduce using rule 26 (function_call -> WATERSHED LPAREN VARIABLE RPAREN .)
     RPAREN          reduce using rule 26 (function_call -> WATERSHED LPAREN VARIABLE RPAREN .)
     COMMA           reduce using rule 26 (function_call -> WATERSHED LPAREN VARIABLE RPAREN .)
 
 
-state 49
+state 59
 
     (27) function_call -> GRABCUT LPAREN VARIABLE RPAREN .
 
@@ -873,19 +1033,20 @@ state 49
     DIVIDE          reduce using rule 27 (function_call -> GRABCUT LPAREN VARIABLE RPAREN .)
     PLUS            reduce using rule 27 (function_call -> GRABCUT LPAREN VARIABLE RPAREN .)
     MINUS           reduce using rule 27 (function_call -> GRABCUT LPAREN VARIABLE RPAREN .)
+    LSQUARE         reduce using rule 27 (function_call -> GRABCUT LPAREN VARIABLE RPAREN .)
     $end            reduce using rule 27 (function_call -> GRABCUT LPAREN VARIABLE RPAREN .)
     RPAREN          reduce using rule 27 (function_call -> GRABCUT LPAREN VARIABLE RPAREN .)
     COMMA           reduce using rule 27 (function_call -> GRABCUT LPAREN VARIABLE RPAREN .)
 
 
-state 50
+state 60
 
     (28) function_call -> TEMPLATEMATCHING LPAREN VARIABLE COMMA . VARIABLE RPAREN
 
-    VARIABLE        shift and go to state 56
+    VARIABLE        shift and go to state 67
 
 
-state 51
+state 61
 
     (29) function_call -> CANNYEDGEDETECTION LPAREN VARIABLE RPAREN .
 
@@ -894,73 +1055,146 @@ state 51
     DIVIDE          reduce using rule 29 (function_call -> CANNYEDGEDETECTION LPAREN VARIABLE RPAREN .)
     PLUS            reduce using rule 29 (function_call -> CANNYEDGEDETECTION LPAREN VARIABLE RPAREN .)
     MINUS           reduce using rule 29 (function_call -> CANNYEDGEDETECTION LPAREN VARIABLE RPAREN .)
+    LSQUARE         reduce using rule 29 (function_call -> CANNYEDGEDETECTION LPAREN VARIABLE RPAREN .)
     $end            reduce using rule 29 (function_call -> CANNYEDGEDETECTION LPAREN VARIABLE RPAREN .)
     RPAREN          reduce using rule 29 (function_call -> CANNYEDGEDETECTION LPAREN VARIABLE RPAREN .)
     COMMA           reduce using rule 29 (function_call -> CANNYEDGEDETECTION LPAREN VARIABLE RPAREN .)
 
 
-state 52
+state 62
 
     (6) flow_function_call -> VARIABLE . LPAREN RPAREN
 
-    LPAREN          shift and go to state 57
+    LPAREN          shift and go to state 68
 
 
-state 53
+state 63
 
     (3) flow -> VARIABLE CONNECT flow_functions .
 
     $end            reduce using rule 3 (flow -> VARIABLE CONNECT flow_functions .)
 
 
-state 54
+state 64
 
     (4) flow_functions -> flow_function_call . CONNECT flow_functions
     (5) flow_functions -> flow_function_call .
 
-    CONNECT         shift and go to state 58
+    CONNECT         shift and go to state 69
     $end            reduce using rule 5 (flow_functions -> flow_function_call .)
 
 
-state 55
+state 65
 
     (24) params -> params COMMA expression .
     (8) expression -> expression . PLUS term
     (9) expression -> expression . MINUS term
+    (34) expression -> expression . LSQUARE NUMBER RSQUARE
+    (35) expression -> expression . LSQUARE NUMBER RSQUARE SETTO expression
 
     RPAREN          reduce using rule 24 (params -> params COMMA expression .)
     COMMA           reduce using rule 24 (params -> params COMMA expression .)
-    PLUS            shift and go to state 18
-    MINUS           shift and go to state 19
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+    LSQUARE         shift and go to state 22
 
 
-state 56
+state 66
+
+    (35) expression -> expression LSQUARE NUMBER RSQUARE SETTO . expression
+    (8) expression -> . expression PLUS term
+    (9) expression -> . expression MINUS term
+    (10) expression -> . term
+    (11) expression -> . string
+    (30) expression -> . list
+    (34) expression -> . expression LSQUARE NUMBER RSQUARE
+    (35) expression -> . expression LSQUARE NUMBER RSQUARE SETTO expression
+    (13) term -> . term TIMES exponent
+    (14) term -> . term DIVIDE exponent
+    (15) term -> . exponent
+    (12) string -> . STRING
+    (31) list -> . LSQUARE list_items RSQUARE
+    (16) exponent -> . factor EXP factor
+    (17) exponent -> . factor
+    (18) exponent -> . LPAREN expression RPAREN
+    (19) factor -> . NUMBER
+    (20) factor -> . VARIABLE
+    (21) factor -> . function_call
+    (22) function_call -> . VARIABLE LPAREN RPAREN
+    (23) function_call -> . VARIABLE LPAREN params RPAREN
+    (26) function_call -> . WATERSHED LPAREN VARIABLE RPAREN
+    (27) function_call -> . GRABCUT LPAREN VARIABLE RPAREN
+    (28) function_call -> . TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
+    (29) function_call -> . CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
+
+    STRING          shift and go to state 10
+    LSQUARE         shift and go to state 7
+    LPAREN          shift and go to state 12
+    NUMBER          shift and go to state 8
+    VARIABLE        shift and go to state 29
+    WATERSHED       shift and go to state 14
+    GRABCUT         shift and go to state 15
+    TEMPLATEMATCHING shift and go to state 16
+    CANNYEDGEDETECTION shift and go to state 17
+
+    expression                     shift and go to state 70
+    term                           shift and go to state 4
+    string                         shift and go to state 5
+    list                           shift and go to state 6
+    exponent                       shift and go to state 9
+    factor                         shift and go to state 11
+    function_call                  shift and go to state 13
+
+state 67
 
     (28) function_call -> TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE . RPAREN
 
-    RPAREN          shift and go to state 59
+    RPAREN          shift and go to state 71
 
 
-state 57
+state 68
 
     (6) flow_function_call -> VARIABLE LPAREN . RPAREN
 
-    RPAREN          shift and go to state 60
+    RPAREN          shift and go to state 72
 
 
-state 58
+state 69
 
     (4) flow_functions -> flow_function_call CONNECT . flow_functions
     (4) flow_functions -> . flow_function_call CONNECT flow_functions
     (5) flow_functions -> . flow_function_call
     (6) flow_function_call -> . VARIABLE LPAREN RPAREN
 
-    VARIABLE        shift and go to state 52
+    VARIABLE        shift and go to state 62
 
-    flow_function_call             shift and go to state 54
-    flow_functions                 shift and go to state 61
+    flow_function_call             shift and go to state 64
+    flow_functions                 shift and go to state 73
 
-state 59
+state 70
+
+    (35) expression -> expression LSQUARE NUMBER RSQUARE SETTO expression .
+    (8) expression -> expression . PLUS term
+    (9) expression -> expression . MINUS term
+    (34) expression -> expression . LSQUARE NUMBER RSQUARE
+    (35) expression -> expression . LSQUARE NUMBER RSQUARE SETTO expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for LSQUARE resolved as shift
+    $end            reduce using rule 35 (expression -> expression LSQUARE NUMBER RSQUARE SETTO expression .)
+    RPAREN          reduce using rule 35 (expression -> expression LSQUARE NUMBER RSQUARE SETTO expression .)
+    COMMA           reduce using rule 35 (expression -> expression LSQUARE NUMBER RSQUARE SETTO expression .)
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+    LSQUARE         shift and go to state 22
+
+  ! PLUS            [ reduce using rule 35 (expression -> expression LSQUARE NUMBER RSQUARE SETTO expression .) ]
+  ! MINUS           [ reduce using rule 35 (expression -> expression LSQUARE NUMBER RSQUARE SETTO expression .) ]
+  ! LSQUARE         [ reduce using rule 35 (expression -> expression LSQUARE NUMBER RSQUARE SETTO expression .) ]
+
+
+state 71
 
     (28) function_call -> TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN .
 
@@ -969,12 +1203,13 @@ state 59
     DIVIDE          reduce using rule 28 (function_call -> TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN .)
     PLUS            reduce using rule 28 (function_call -> TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN .)
     MINUS           reduce using rule 28 (function_call -> TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN .)
+    LSQUARE         reduce using rule 28 (function_call -> TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN .)
     $end            reduce using rule 28 (function_call -> TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN .)
     RPAREN          reduce using rule 28 (function_call -> TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN .)
     COMMA           reduce using rule 28 (function_call -> TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN .)
 
 
-state 60
+state 72
 
     (6) flow_function_call -> VARIABLE LPAREN RPAREN .
 
@@ -982,9 +1217,15 @@ state 60
     $end            reduce using rule 6 (flow_function_call -> VARIABLE LPAREN RPAREN .)
 
 
-state 61
+state 73
 
     (4) flow_functions -> flow_function_call CONNECT flow_functions .
 
     $end            reduce using rule 4 (flow_functions -> flow_function_call CONNECT flow_functions .)
 
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for PLUS in state 70 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 70 resolved as shift
+WARNING: shift/reduce conflict for LSQUARE in state 70 resolved as shift

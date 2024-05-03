@@ -35,16 +35,39 @@
 <br>**Rule 27** |   function_call -> GRABCUT LPAREN VARIABLE RPAREN
 <br>**Rule 28** |   function_call -> TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN
 <br>**Rule 29** |   function_call -> CANNYEDGEDETECTION LPAREN VARIABLE RPAREN
+<br>**Rule 30** |   expression -> list
+<br>**Rule 31** |   list -> LSQUARE list_items RSQUARE
+<br>**Rule 32** |   list_items -> list_items COMMA NUMBER
+<br>**Rule 33** |   list_items -> NUMBER
+<br>**Rule 34** |   expression -> expression LSQUARE NUMBER RSQUARE
+<br>**Rule 35** |   expression -> expression LSQUARE NUMBER RSQUARE SETTO expression
 
 ## Funciones Implementadas
-- Aceptar archivos y ejecutar el contenido
-- Implementación de visualización de histogramas
-- Implementación de un algoritmo complejo
-- Implementación de pruebas automatizadas
-- Implementación de un algoritmo complejo como herramienta en el lenguaje: WaterShed, Grabcut, TemplateMatching, CannyEdgeDetection
-- 
+CANNYEDGEDETECTION: función de OpenCV
+<br>COMMA: caracter ','
+<br>CONNECT: expresión regular que busca '->'
+<br>DIVIDE: expresión regular que busca '/'
+<br>EXP: expresión regular que busca '^'
+<br>GRABCUT: función de OpenCV
+<br>LPAREN: expresión regular que busca '('
+<br>LSQUARE: expresión regular que busca '['
+<br>MINUS: expresión regular que busca '-'
+<br>NUMBER: expresión regular que busca cualquier número y lo vuelve entero o decimal 
+<br>PLUS: expresión regular que busca '+'
+<br>RPAREN: expresión regular que busca ')'
+<br>RSQUARE: expresión regular que busca ']'
+<br>SETTO: expresión regular que busca '='
+<br>STRING: expresión regular que busca cualquier string que se encuentre entre comillas dobles '"'
+<br>TEMPLATEMATCHING: función de OpenCV
+<br>TIMES: expresión regular que busca '*'
+<br>VARIABLE: expresión regular que busca cualquier string que no empiece con números y no tenga comillas dobles
+<br>WATERSHED: función de OpenCV
 
-## Expresiones
+## Expresiones de Prueba
+
+
+## Árbol de Sintaxis
+
 
 ## Videos
 [Emiliano Cabrera Ruiz]()
