@@ -1,1 +1,0 @@
-save_image("1449_sat_saved", image)
