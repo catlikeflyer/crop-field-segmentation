@@ -13,8 +13,6 @@
 # Jupyter notebook output files
 *.html
 *.pdf
-*.png
-*.jpg
 *.jpeg
 *.gif
 
