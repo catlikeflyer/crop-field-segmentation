@@ -1,7 +1,4 @@
-image = load_image("C:\\Users\\valte\\8th semester\\Compiladores\\1499_sat.jpg")
-
-matrix = gen_matrix(2, 3, 1, 2, 3, 4, 5, 6)
-vector = gen_vector(1, 2, 3, 4, 5)
+image = load_image("crop-field-segmentation\\compiladores\\1499_sat.jpg")
 
 image_segmented = watershed_segmentation(image)
 show_image(image_segmented)
