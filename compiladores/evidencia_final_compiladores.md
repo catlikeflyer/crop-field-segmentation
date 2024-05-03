@@ -86,7 +86,7 @@ CANNYEDGEDETECTION: función de OpenCV
 ![Histograma1](./doc_images/histogram1.png)
 ![Histograma2](./doc_images/histogram2.png)
 ##### Pruebas automáticas
-![](./doc_images/)
+![Pruebas](./doc_images/pruebas%20de%20imagenes.png)
 
 ## Videos
 [Emiliano Cabrera Ruiz]()
