@@ -89,7 +89,7 @@ CANNYEDGEDETECTION: función de OpenCV
 ![Pruebas](./doc_images/pruebas%20de%20imagenes.png)
 
 ## Videos
-[Emiliano Cabrera Ruiz]()
+[Emiliano Cabrera Ruiz](https://drive.google.com/drive/folders/1VEq2fBzy4F_NDalSKXm8r0tKixowO5xq?usp=drive_link)
 <br>[Do Hyun Nam](https://drive.google.com/file/d/1NG_0DgH2GM-sYpHumi0UpwTsko8Kz_3B/view?usp=sharing)
 <br>[Valter Alejandro Kuhne Hernández](https://drive.google.com/file/d/1Wz9seMNGhY6-bXIhIUJ1RTjYmYnOq0xQ/view?usp=sharing)
 
