@@ -94,3 +94,7 @@ CANNYEDGEDETECTION: función de OpenCV
 <br>[Valter Alejandro Kuhne Hernández](https://drive.google.com/file/d/1Wz9seMNGhY6-bXIhIUJ1RTjYmYnOq0xQ/view?usp=sharing)
 
 ## Referencias
+- Izaguirre, E. (2026, October 6). Image Segmentation: An In-Depth Guide. Medium. Image Segmentation: An In-Depth Guide.
+- Yu, B. (2023). Undefined. In 2023 International Conference on Computers, Information Processing and Advanced Education (CIPAE) (pp. 260-264). https://doi.org/10.1109/CIPAE60493.2023.00056
+
+
