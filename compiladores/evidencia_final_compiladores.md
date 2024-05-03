@@ -64,7 +64,18 @@ CANNYEDGEDETECTION: función de OpenCV
 <br>WATERSHED: función de OpenCV
 
 ## Expresiones de Prueba
-
+#### Operadores
+![Precedencia de operadores](./doc_images/tree1.png)
+#### Funciones
+![Funciones](./doc_images/funcs.png)
+#### Variables
+![Asignacion de variables](./doc_images/vars.png)
+#### Flujos de imagenes
+![Flujos de imagenes](./doc_images/image_flow.png)
+#### Filtros OpenCV
+![Filtros OpenCV](./doc_images/filter.png)
+#### Nuevas características
+![]()
 
 ## Árbol de Sintaxis
 
