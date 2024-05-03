@@ -74,8 +74,184 @@ CANNYEDGEDETECTION: función de OpenCV
 ![Flujos de imagenes](./doc_images/image_flow.png)
 #### Filtros OpenCV
 ![Filtros OpenCV](./doc_images/filter.png)
+
+
+## Arboles de sintaxis
+### Para archivo instrucciones.py donde se pusieron a prueba los filtros OpenCV 
+
+Expresión en la línea 1: image = load_image("C:\\Users\\valte\\8th semester\\Compiladores\\1499_sat.jpg")
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'STRING', 'label': 'str_C:\\\\Users\\\\valte\\\\8th semester\\\\Compiladores\\\\1499_sat.jpg', 'value': 'C:\\\\Users\\\\valte\\\\8th semester\\\\Compiladores\\\\1499_sat.jpg', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_load_image', 'value': 'load_image', 'counter': 2}
+3: {'type': 'ASSIGN', 'label': '=', 'value': '', 'counter': 3}
+4: {'type': 'VARIABLE_ASSIGN', 'label': 'VAR_image', 'value': 'image', 'counter': 4}
+
+Expresión en la línea 3: image_segmented = watershed_segmentation(image)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_image', 'value': 'image', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_watershed_segmentation', 'value': 'watershed_segmentation', 'counter': 2}
+3: {'type': 'ASSIGN', 'label': '=', 'value': '', 'counter': 3}
+4: {'type': 'VARIABLE_ASSIGN', 'label': 'VAR_image_segmented', 'value': 'image_segmented', 'counter': 4}
+
+Expresión en la línea 4: show_image(image_segmented)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_image_segmented', 'value': 'image_segmented', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_show_image', 'value': 'show_image', 'counter': 2}
+
+Expresión en la línea 6: image_segmented = grabcut_segmentation(image)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_image', 'value': 'image', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_grabcut_segmentation', 'value': 'grabcut_segmentation', 'counter': 2}
+3: {'type': 'ASSIGN', 'label': '=', 'value': '', 'counter': 3}
+4: {'type': 'VARIABLE_ASSIGN', 'label': 'VAR_image_segmented', 'value': 'image_segmented', 'counter': 4}
+
+Expresión en la línea 7: show_image(image_segmented)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_image_segmented', 'value': 'image_segmented', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_show_image', 'value': 'show_image', 'counter': 2}
+
+Expresión en la línea 9: template = load_image("C:\\Users\\valte\\8th semester\\Compiladores\\template.jpg")
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'STRING', 'label': 'str_C:\\\\Users\\\\valte\\\\8th semester\\\\Compiladores\\\\template.jpg', 'value': 'C:\\\\Users\\\\valte\\\\8th semester\\\\Compiladores\\\\template.jpg', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_load_image', 'value': 'load_image', 'counter': 2}
+3: {'type': 'ASSIGN', 'label': '=', 'value': '', 'counter': 3}
+4: {'type': 'VARIABLE_ASSIGN', 'label': 'VAR_template', 'value': 'template', 'counter': 4}
+
+Expresión en la línea 10: image_matched = template_matching(image, template)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_image', 'value': 'image', 'counter': 1}
+2: {'type': 'VARIABLE', 'label': 'VAR_template', 'value': 'template', 'counter': 2}
+3: {'type': 'FUNCTION_CALL', 'label': 'FUN_template_matching', 'value': 'template_matching', 'counter': 3}
+4: {'type': 'ASSIGN', 'label': '=', 'value': '', 'counter': 4}
+5: {'type': 'VARIABLE_ASSIGN', 'label': 'VAR_image_matched', 'value': 'image_matched', 'counter': 5}
+
+Expresión en la línea 11: show_image(image_matched)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_image_matched', 'value': 'image_matched', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_show_image', 'value': 'show_image', 'counter': 2}
+
+Expresión en la línea 13: edges = canny_edge_detection(image)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_image', 'value': 'image', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_canny_edge_detection', 'value': 'canny_edge_detection', 'counter': 2}
+3: {'type': 'ASSIGN', 'label': '=', 'value': '', 'counter': 3}
+4: {'type': 'VARIABLE_ASSIGN', 'label': 'VAR_edges', 'value': 'edges', 'counter': 4}
+
+Expresión en la línea 14: show_image(edges)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_edges', 'value': 'edges', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_show_image', 'value': 'show_image', 'counter': 2}
+
+### Para archivo instrucciones_lista.txt donde se probaron la creación de matrices y funciones de numpy
+
+Expresión en la línea 1: matriz = gen_matrix(1,2,3,4)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'NUMBER', 'label': 'NUM_1', 'value': 1, 'counter': 1}
+2: {'type': 'NUMBER', 'label': 'NUM_2', 'value': 2, 'counter': 2}
+3: {'type': 'NUMBER', 'label': 'NUM_3', 'value': 3, 'counter': 3}
+4: {'type': 'NUMBER', 'label': 'NUM_4', 'value': 4, 'counter': 4}
+5: {'type': 'FUNCTION_CALL', 'label': 'FUN_gen_matrix', 'value': 'gen_matrix', 'counter': 5}
+6: {'type': 'ASSIGN', 'label': '=', 'value': '', 'counter': 6}
+7: {'type': 'VARIABLE_ASSIGN', 'label': 'VAR_matriz', 'value': 'matriz', 'counter': 7}
+
+Expresión en la línea 3: matriz_t = np_transpose(matriz)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_matriz', 'value': 'matriz', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_np_transpose', 'value': 'np_transpose', 'counter': 2}
+3: {'type': 'ASSIGN', 'label': '=', 'value': '', 'counter': 3}
+4: {'type': 'VARIABLE_ASSIGN', 'label': 'VAR_matriz_t', 'value': 'matriz_t', 'counter': 4}
+
+Expresión en la línea 4: matriz_d = np_dot(matriz, matriz_t)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_matriz', 'value': 'matriz', 'counter': 1}
+2: {'type': 'VARIABLE', 'label': 'VAR_matriz_t', 'value': 'matriz_t', 'counter': 2}
+3: {'type': 'FUNCTION_CALL', 'label': 'FUN_np_dot', 'value': 'np_dot', 'counter': 3}
+4: {'type': 'ASSIGN', 'label': '=', 'value': '', 'counter': 4}
+5: {'type': 'VARIABLE_ASSIGN', 'label': 'VAR_matriz_d', 'value': 'matriz_d', 'counter': 5}
+
+Expresión en la línea 6: np_max(matriz)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_matriz', 'value': 'matriz', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_np_max', 'value': 'np_max', 'counter': 2}
+
+Expresión en la línea 7: np_mean(matriz)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_matriz', 'value': 'matriz', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_np_mean', 'value': 'np_mean', 'counter': 2}
+
+Expresión en la línea 8: np_std(matriz)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_matriz', 'value': 'matriz', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_np_std', 'value': 'np_std', 'counter': 2}
+
+Expresión en la línea 9: np_sum(matriz)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_matriz', 'value': 'matriz', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_np_sum', 'value': 'np_sum', 'counter': 2}
+
+Expresión en la línea 10: np_max(matriz)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_matriz', 'value': 'matriz', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_np_max', 'value': 'np_max', 'counter': 2}
+
+Expresión en la línea 11: np_min(matriz)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_matriz', 'value': 'matriz', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_np_min', 'value': 'np_min', 'counter': 2}
+
+Expresión en la línea 12: np_var(matriz)
+
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_matriz', 'value': 'matriz', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_np_var', 'value': 'np_var', 'counter': 2}
+
+Expresión en la línea 13: np_median(matriz)
+Árbol de sintaxis abstracto:
+0: {'type': 'INITIAL', 'label': 'INIT', 'counter': 0}
+1: {'type': 'VARIABLE', 'label': 'VAR_matriz', 'value': 'matriz', 'counter': 1}
+2: {'type': 'FUNCTION_CALL', 'label': 'FUN_np_median', 'value': 'np_median', 'counter': 2}
+
 #### Nuevas características
-![]()
+![]() 
 
 ## Videos
 [Emiliano Cabrera Ruiz]()
