@@ -77,9 +77,6 @@ CANNYEDGEDETECTION: función de OpenCV
 #### Nuevas características
 ![]()
 
-## Árbol de Sintaxis
-
-
 ## Videos
 [Emiliano Cabrera Ruiz]()
 <br>[Do Hyun Nam]()
