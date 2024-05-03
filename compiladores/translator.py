@@ -51,6 +51,8 @@ tokens = (
     'EXP',
     'LPAREN',
     'RPAREN',
+    'LSQUARE',
+    'RSQUARE',
     'COMMA',
     'STRING',
     'CONNECT',
@@ -68,6 +70,8 @@ t_SETTO = r'='
 t_EXP = r'\^'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
+t_LSQUARE = r'\['
+t_RSQUARE = r'\]'
 t_COMMA = r','
 t_CONNECT = r'\->'
 

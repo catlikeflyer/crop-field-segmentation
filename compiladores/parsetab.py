@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'COMMA CONNECT DIVIDE EXP LPAREN MINUS NUMBER PLUS RPAREN SETTO STRING TIMES VARIABLE\n    assignment : VARIABLE SETTO expression\n    \n    assignment : VARIABLE SETTO flow\n    \n    flow : VARIABLE CONNECT flow_functions\n    \n    flow_functions : flow_function_call CONNECT flow_functions\n    \n    flow_functions : flow_function_call\n    \n    flow_function_call : VARIABLE LPAREN params RPAREN\n     assignment : expression\n    \n    expression : expression PLUS term\n    \n    expression : expression MINUS term\n    \n    expression : term \n                | string\n    \n    string : STRING\n    \n    term : term TIMES exponent\n    \n    term : term DIVIDE exponent\n    \n    term : exponent\n    \n    exponent : factor EXP factor\n    \n    exponent : factor\n    \n    exponent : LPAREN expression RPAREN\n     factor : NUMBER\n     factor : VARIABLE\n    \n    factor : function_call\n    \n    function_call : VARIABLE LPAREN  RPAREN\n    \n    function_call : VARIABLE LPAREN params RPAREN\n    \n    params : params COMMA expression \n            | expression\n    '
+_lr_signature = 'leftLSQUARERSQUAREleftSETTOCANNYEDGEDETECTION COMMA CONNECT DIVIDE EXP GRABCUT LPAREN LSQUARE MINUS NUMBER PLUS RPAREN RSQUARE SETTO STRING TEMPLATEMATCHING TIMES VARIABLE WATERSHED\n    assignment : VARIABLE SETTO expression\n    \n    assignment : VARIABLE SETTO flow\n    \n    flow : VARIABLE CONNECT flow_functions\n    \n    flow_functions : flow_function_call CONNECT flow_functions\n    \n    flow_functions : flow_function_call\n    \n    flow_function_call : VARIABLE LPAREN RPAREN\n     assignment : expression\n    \n    expression : expression PLUS term\n    \n    expression : expression MINUS term\n    \n    expression : term \n                | string\n    \n    string : STRING\n    \n    term : term TIMES exponent\n    \n    term : term DIVIDE exponent\n    \n    term : exponent\n    \n    exponent : factor EXP factor\n    \n    exponent : factor\n    \n    exponent : LPAREN expression RPAREN\n     factor : NUMBER\n     factor : VARIABLE\n    \n    factor : function_call\n    \n    function_call : VARIABLE LPAREN  RPAREN\n    \n    function_call : VARIABLE LPAREN params RPAREN\n    \n    params : params COMMA expression \n            | expression\n    \n    function_call : WATERSHED LPAREN VARIABLE RPAREN\n    \n    function_call : GRABCUT LPAREN VARIABLE RPAREN\n    \n    function_call : TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN\n    \n    function_call : CANNYEDGEDETECTION LPAREN VARIABLE RPAREN\n    '
     
-_lr_action_items = {'VARIABLE':([0,9,12,13,14,15,16,17,18,33,35,40,41,],[2,20,21,20,20,20,20,20,20,36,20,20,36,]),'STRING':([0,9,12,13,35,40,],[7,7,7,7,7,7,]),'LPAREN':([0,2,9,12,13,14,15,16,17,20,21,35,36,40,],[9,13,9,9,9,9,9,9,9,13,13,9,40,9,]),'NUMBER':([0,9,12,13,14,15,16,17,18,35,40,],[10,10,10,10,10,10,10,10,10,10,10,]),'$end':([1,2,3,4,5,6,7,8,10,11,20,21,22,23,24,27,28,29,30,31,32,34,37,38,43,44,],[0,-20,-7,-10,-11,-15,-12,-17,-19,-21,-20,-20,-1,-2,-22,-8,-9,-13,-14,-16,-18,-23,-3,-5,-4,-6,]),'SETTO':([2,],[12,]),'EXP':([2,8,10,11,20,21,24,34,],[-20,18,-19,-21,-20,-20,-22,-23,]),'TIMES':([2,4,6,8,10,11,20,21,24,27,28,29,30,31,32,34,],[-20,16,-15,-17,-19,-21,-20,-20,-22,16,16,-13,-14,-16,-18,-23,]),'DIVIDE':([2,4,6,8,10,11,20,21,24,27,28,29,30,31,32,34,],[-20,17,-15,-17,-19,-21,-20,-20,-22,17,17,-13,-14,-16,-18,-23,]),'PLUS':([2,3,4,5,6,7,8,10,11,19,20,21,22,24,26,27,28,29,30,31,32,34,39,],[-20,14,-10,-11,-15,-12,-17,-19,-21,14,-20,-20,14,-22,14,-8,-9,-13,-14,-16,-18,-23,14,]),'MINUS':([2,3,4,5,6,7,8,10,11,19,20,21,22,24,26,27,28,29,30,31,32,34,39,],[-20,15,-10,-11,-15,-12,-17,-19,-21,15,-20,-20,15,-22,15,-8,-9,-13,-14,-16,-18,-23,15,]),'RPAREN':([4,5,6,7,8,10,11,13,19,20,24,25,26,27,28,29,30,31,32,34,39,42,],[-10,-11,-15,-12,-17,-19,-21,24,32,-20,-22,34,-25,-8,-9,-13,-14,-16,-18,-23,-24,44,]),'COMMA':([4,5,6,7,8,10,11,20,24,25,26,27,28,29,30,31,32,34,39,42,],[-10,-11,-15,-12,-17,-19,-21,-20,-22,35,-25,-8,-9,-13,-14,-16,-18,-23,-24,35,]),'CONNECT':([21,38,44,],[33,41,-6,]),}
+_lr_action_items = {'VARIABLE':([0,9,16,17,18,19,20,21,22,25,26,27,28,45,47,50,58,],[2,24,29,24,24,24,24,24,24,41,42,43,44,52,24,56,52,]),'STRING':([0,9,16,17,47,],[7,7,7,7,7,]),'LPAREN':([0,2,9,12,13,14,15,16,17,18,19,20,21,24,29,47,52,],[9,17,9,25,26,27,28,9,9,9,9,9,9,17,17,9,57,]),'NUMBER':([0,9,16,17,18,19,20,21,22,47,],[10,10,10,10,10,10,10,10,10,10,]),'WATERSHED':([0,9,16,17,18,19,20,21,22,47,],[12,12,12,12,12,12,12,12,12,12,]),'GRABCUT':([0,9,16,17,18,19,20,21,22,47,],[13,13,13,13,13,13,13,13,13,13,]),'TEMPLATEMATCHING':([0,9,16,17,18,19,20,21,22,47,],[14,14,14,14,14,14,14,14,14,14,]),'CANNYEDGEDETECTION':([0,9,16,17,18,19,20,21,22,47,],[15,15,15,15,15,15,15,15,15,15,]),'$end':([1,2,3,4,5,6,7,8,10,11,24,29,30,31,32,35,36,37,38,39,40,46,48,49,51,53,54,59,60,61,],[0,-20,-7,-10,-11,-15,-12,-17,-19,-21,-20,-20,-1,-2,-22,-8,-9,-13,-14,-16,-18,-23,-26,-27,-29,-3,-5,-28,-6,-4,]),'SETTO':([2,],[16,]),'EXP':([2,8,10,11,24,29,32,46,48,49,51,59,],[-20,22,-19,-21,-20,-20,-22,-23,-26,-27,-29,-28,]),'TIMES':([2,4,6,8,10,11,24,29,32,35,36,37,38,39,40,46,48,49,51,59,],[-20,20,-15,-17,-19,-21,-20,-20,-22,20,20,-13,-14,-16,-18,-23,-26,-27,-29,-28,]),'DIVIDE':([2,4,6,8,10,11,24,29,32,35,36,37,38,39,40,46,48,49,51,59,],[-20,21,-15,-17,-19,-21,-20,-20,-22,21,21,-13,-14,-16,-18,-23,-26,-27,-29,-28,]),'PLUS':([2,3,4,5,6,7,8,10,11,23,24,29,30,32,34,35,36,37,38,39,40,46,48,49,51,55,59,],[-20,18,-10,-11,-15,-12,-17,-19,-21,18,-20,-20,18,-22,18,-8,-9,-13,-14,-16,-18,-23,-26,-27,-29,18,-28,]),'MINUS':([2,3,4,5,6,7,8,10,11,23,24,29,30,32,34,35,36,37,38,39,40,46,48,49,51,55,59,],[-20,19,-10,-11,-15,-12,-17,-19,-21,19,-20,-20,19,-22,19,-8,-9,-13,-14,-16,-18,-23,-26,-27,-29,19,-28,]),'RPAREN':([4,5,6,7,8,10,11,17,23,24,32,33,34,35,36,37,38,39,40,41,42,44,46,48,49,51,55,56,57,59,],[-10,-11,-15,-12,-17,-19,-21,32,40,-20,-22,46,-25,-8,-9,-13,-14,-16,-18,48,49,51,-23,-26,-27,-29,-24,59,60,-28,]),'COMMA':([4,5,6,7,8,10,11,24,32,33,34,35,36,37,38,39,40,43,46,48,49,51,55,59,],[-10,-11,-15,-12,-17,-19,-21,-20,-22,47,-25,-8,-9,-13,-14,-16,-18,50,-23,-26,-27,-29,-24,-28,]),'CONNECT':([29,54,60,],[45,58,-6,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'assignment':([0,],[1,]),'expression':([0,9,12,13,35,40,],[3,19,22,26,39,26,]),'term':([0,9,12,13,14,15,35,40,],[4,4,4,4,27,28,4,4,]),'string':([0,9,12,13,35,40,],[5,5,5,5,5,5,]),'exponent':([0,9,12,13,14,15,16,17,35,40,],[6,6,6,6,6,6,29,30,6,6,]),'factor':([0,9,12,13,14,15,16,17,18,35,40,],[8,8,8,8,8,8,8,8,31,8,8,]),'function_call':([0,9,12,13,14,15,16,17,18,35,40,],[11,11,11,11,11,11,11,11,11,11,11,]),'flow':([12,],[23,]),'params':([13,40,],[25,42,]),'flow_functions':([33,41,],[37,43,]),'flow_function_call':([33,41,],[38,38,]),}
+_lr_goto_items = {'assignment':([0,],[1,]),'expression':([0,9,16,17,47,],[3,23,30,34,55,]),'term':([0,9,16,17,18,19,47,],[4,4,4,4,35,36,4,]),'string':([0,9,16,17,47,],[5,5,5,5,5,]),'exponent':([0,9,16,17,18,19,20,21,47,],[6,6,6,6,6,6,37,38,6,]),'factor':([0,9,16,17,18,19,20,21,22,47,],[8,8,8,8,8,8,8,8,39,8,]),'function_call':([0,9,16,17,18,19,20,21,22,47,],[11,11,11,11,11,11,11,11,11,11,]),'flow':([16,],[31,]),'params':([17,],[33,]),'flow_functions':([45,58,],[53,61,]),'flow_function_call':([45,58,],[54,54,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,29 +27,33 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> assignment","S'",1,None,None,None),
-  ('assignment -> VARIABLE SETTO expression','assignment',3,'p_assignment_assign','translator.py',101),
-  ('assignment -> VARIABLE SETTO flow','assignment',3,'p_assignment_flow','translator.py',113),
-  ('flow -> VARIABLE CONNECT flow_functions','flow',3,'p_flow_form','translator.py',119),
-  ('flow_functions -> flow_function_call CONNECT flow_functions','flow_functions',3,'p_flow_functions','translator.py',125),
-  ('flow_functions -> flow_function_call','flow_functions',1,'p_flow_function','translator.py',131),
-  ('flow_function_call -> VARIABLE LPAREN params RPAREN','flow_function_call',4,'p_flow_function_call','translator.py',137),
-  ('assignment -> expression','assignment',1,'p_assignment_expression','translator.py',142),
-  ('expression -> expression PLUS term','expression',3,'p_expression_plus','translator.py',148),
-  ('expression -> expression MINUS term','expression',3,'p_expression_minus','translator.py',159),
-  ('expression -> term','expression',1,'p_expression_term','translator.py',170),
-  ('expression -> string','expression',1,'p_expression_term','translator.py',171),
-  ('string -> STRING','string',1,'p_string_def','translator.py',177),
-  ('term -> term TIMES exponent','term',3,'p_term_times','translator.py',183),
-  ('term -> term DIVIDE exponent','term',3,'p_term_divide','translator.py',193),
-  ('term -> exponent','term',1,'p_term_exponent','translator.py',202),
-  ('exponent -> factor EXP factor','exponent',3,'p_exponent_exp','translator.py',208),
-  ('exponent -> factor','exponent',1,'p_exponent_factor','translator.py',218),
-  ('exponent -> LPAREN expression RPAREN','exponent',3,'p_exponent_parent','translator.py',224),
-  ('factor -> NUMBER','factor',1,'p_factor_num','translator.py',232),
-  ('factor -> VARIABLE','factor',1,'p_factor_id','translator.py',237),
-  ('factor -> function_call','factor',1,'p_factor_function_call','translator.py',244),
-  ('function_call -> VARIABLE LPAREN RPAREN','function_call',3,'p_function_call_no_params','translator.py',251),
-  ('function_call -> VARIABLE LPAREN params RPAREN','function_call',4,'p_function_call_params','translator.py',258),
-  ('params -> params COMMA expression','params',3,'p_params','translator.py',268),
-  ('params -> expression','params',1,'p_params','translator.py',269),
+  ('assignment -> VARIABLE SETTO expression','assignment',3,'p_assignment_assign','translator.py',119),
+  ('assignment -> VARIABLE SETTO flow','assignment',3,'p_assignment_flow','translator.py',130),
+  ('flow -> VARIABLE CONNECT flow_functions','flow',3,'p_flow_form','translator.py',138),
+  ('flow_functions -> flow_function_call CONNECT flow_functions','flow_functions',3,'p_flow_functions','translator.py',144),
+  ('flow_functions -> flow_function_call','flow_functions',1,'p_flow_function','translator.py',150),
+  ('flow_function_call -> VARIABLE LPAREN RPAREN','flow_function_call',3,'p_flow_function_call','translator.py',156),
+  ('assignment -> expression','assignment',1,'p_assignment_expression','translator.py',161),
+  ('expression -> expression PLUS term','expression',3,'p_expression_plus','translator.py',167),
+  ('expression -> expression MINUS term','expression',3,'p_expression_minus','translator.py',177),
+  ('expression -> term','expression',1,'p_expression_term','translator.py',187),
+  ('expression -> string','expression',1,'p_expression_term','translator.py',188),
+  ('string -> STRING','string',1,'p_string_def','translator.py',194),
+  ('term -> term TIMES exponent','term',3,'p_term_times','translator.py',200),
+  ('term -> term DIVIDE exponent','term',3,'p_term_divide','translator.py',209),
+  ('term -> exponent','term',1,'p_term_exponent','translator.py',218),
+  ('exponent -> factor EXP factor','exponent',3,'p_exponent_exp','translator.py',224),
+  ('exponent -> factor','exponent',1,'p_exponent_factor','translator.py',233),
+  ('exponent -> LPAREN expression RPAREN','exponent',3,'p_exponent_parent','translator.py',239),
+  ('factor -> NUMBER','factor',1,'p_factor_num','translator.py',246),
+  ('factor -> VARIABLE','factor',1,'p_factor_id','translator.py',251),
+  ('factor -> function_call','factor',1,'p_factor_function_call','translator.py',258),
+  ('function_call -> VARIABLE LPAREN RPAREN','function_call',3,'p_function_call_no_params','translator.py',265),
+  ('function_call -> VARIABLE LPAREN params RPAREN','function_call',4,'p_function_call_params','translator.py',272),
+  ('params -> params COMMA expression','params',3,'p_params','translator.py',282),
+  ('params -> expression','params',1,'p_params','translator.py',283),
+  ('function_call -> WATERSHED LPAREN VARIABLE RPAREN','function_call',4,'p_function_call_watershed','translator.py',292),
+  ('function_call -> GRABCUT LPAREN VARIABLE RPAREN','function_call',4,'p_function_call_grabcut','translator.py',298),
+  ('function_call -> TEMPLATEMATCHING LPAREN VARIABLE COMMA VARIABLE RPAREN','function_call',6,'p_function_call_template_matching','translator.py',304),
+  ('function_call -> CANNYEDGEDETECTION LPAREN VARIABLE RPAREN','function_call',4,'p_function_call_canny_edge_detection','translator.py',310),
 ]
