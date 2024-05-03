@@ -90,7 +90,7 @@ CANNYEDGEDETECTION: función de OpenCV
 
 ## Videos
 [Emiliano Cabrera Ruiz]()
-<br>[Do Hyun Nam]()
+<br>[Do Hyun Nam](https://drive.google.com/file/d/1NG_0DgH2GM-sYpHumi0UpwTsko8Kz_3B/view?usp=sharing)
 <br>[Valter Alejandro Kuhne Hernández]()
 
 ## Referencias
