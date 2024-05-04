@@ -12,7 +12,6 @@
 
 # Jupyter notebook output files
 *.html
-*.pdf
 *.jpeg
 *.gif
 *.pth
